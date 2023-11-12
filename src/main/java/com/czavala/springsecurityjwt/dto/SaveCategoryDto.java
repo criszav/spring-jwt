@@ -12,6 +12,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class SaveCategoryDto implements Serializable {
 
-    @NotBlank
+    @NotBlank(message = "Category name cannot be blank")
     private String name;
 }

@@ -15,12 +15,12 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class SaveProductDto implements Serializable {
 
-    @NotBlank
+    @NotBlank(message = "Name cannot be blank")
     private String name;
 
     @DecimalMin(value = "0.01", message = "Price must be greater than 0")
     private BigDecimal price;
 
-    @Min(value = 1) // id de la categoria ingresada debe ser mayor o igual 1
+    @Min(value = 1, message = "Category cannot be null") // id de la categoria ingresada debe ser mayor o igual 1
     private Long categoryId;
 }
