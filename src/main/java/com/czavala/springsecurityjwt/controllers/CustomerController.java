@@ -19,7 +19,7 @@ public class CustomerController {
 
     private final AuthenticationService authenticationService;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<RegisteredUserDto> registerOneCustomer(@RequestBody @Valid SaveUserDto newUser) {
         RegisteredUserDto registeredUserDto = authenticationService.registerOneCustomer(newUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(registeredUserDto);
