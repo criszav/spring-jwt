@@ -7,6 +7,9 @@ import com.czavala.springsecurityjwt.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -19,13 +22,26 @@ public class AuthenticationService {
 
         RegisteredUserDto userDto = new RegisteredUserDto();
         userDto.setId(user.getId());
-        userDto.setName(userDto.getName());
+        userDto.setName(user.getName());
         userDto.setUsername(user.getUsername());
         userDto.setRole(user.getRole().name());
 
-        String jwt = jwtService.generateToken(user);
+        String jwt = jwtService.generateToken(user, generateExtraClaims(user));
         userDto.setJwt(jwt);
 
         return userDto;
     }
+
+    private Map<String, Object> generateExtraClaims(User user) {
+        Map<String, Object> extraClaims = new HashMap<>();
+        // agrega nombre del usuario a los extraClaims (info del payload del jwt) que seran agregados al token
+        extraClaims.put("name", user.getName());
+        // agrega nombre el role asignado del usuario a los extraClaims (info del payload del jwt) que seran agregados al token
+        extraClaims.put("role", user.getRole().name());
+        // agrega nombre los permisos del usuario a los extraClaims (info del payload del jwt) que seran agregados al token
+        extraClaims.put("authorities", user.getAuthorities());
+
+        return extraClaims;
+    }
+
 }
