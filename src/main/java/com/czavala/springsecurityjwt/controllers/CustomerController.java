@@ -1,7 +1,7 @@
 package com.czavala.springsecurityjwt.controllers;
 
-import com.czavala.springsecurityjwt.dto.RegisteredUserDto;
-import com.czavala.springsecurityjwt.dto.SaveUserDto;
+import com.czavala.springsecurityjwt.dto.register.RegisteredUserDto;
+import com.czavala.springsecurityjwt.dto.register.SaveUserDto;
 import com.czavala.springsecurityjwt.services.auth.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

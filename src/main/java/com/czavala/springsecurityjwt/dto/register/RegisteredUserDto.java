@@ -1,4 +1,4 @@
-package com.czavala.springsecurityjwt.dto;
+package com.czavala.springsecurityjwt.dto.register;
 
 import com.czavala.springsecurityjwt.persistance.entities.util.Role;
 import lombok.AllArgsConstructor;

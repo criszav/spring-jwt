@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -16,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class HttpSecurityConfig {
 
     private final AuthenticationProvider authProvider;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -29,6 +31,8 @@ public class HttpSecurityConfig {
                 })
                 // define estrategia de autenticacion (esta inyectada)
                 .authenticationProvider(authProvider)
+                // ejecuta el "jwtAuthenticationFilter" antes de que se ejecute el filtro "UsernamePasswordAuthenticationFilter"
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authrequest -> {
                     // endpoints register y auth son publicos (para registrarse y logearse)
                     authrequest.requestMatchers(HttpMethod.POST, "/api/v1/customers/register").permitAll();

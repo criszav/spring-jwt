@@ -1,10 +1,7 @@
 package com.czavala.springsecurityjwt.services.auth;
 
 import com.czavala.springsecurityjwt.persistance.entities.User;
-import io.jsonwebtoken.Header;
-import io.jsonwebtoken.Jwt;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -62,4 +59,21 @@ public class JwtService {
         // genera instancia de SecretKey con algoritmo HMAC-SHA
         return Keys.hmacShaKeyFor(decodedKey);
     }
+
+    public String extractUsername(String jwt) {
+        // extrae todos los claims del token, y luego se obtiene el claim "subject" que contiene el username
+        return extractAllClaims(jwt).getSubject();
+    }
+
+    private Claims extractAllClaims(String jwt) {
+        return Jwts.parserBuilder()
+                // establece la clave de firma para verificar la autenticidad del token
+                .setSigningKey(generateKey())
+                .build()
+                .parseClaimsJws(jwt)
+                // obtiene el payload del token (la data)
+                .getBody();
+    }
+
+
 }

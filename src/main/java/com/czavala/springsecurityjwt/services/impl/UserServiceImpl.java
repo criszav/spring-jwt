@@ -1,6 +1,6 @@
 package com.czavala.springsecurityjwt.services.impl;
 
-import com.czavala.springsecurityjwt.dto.SaveUserDto;
+import com.czavala.springsecurityjwt.dto.register.SaveUserDto;
 import com.czavala.springsecurityjwt.exceptions.InvalidPasswordException;
 import com.czavala.springsecurityjwt.persistance.entities.User;
 import com.czavala.springsecurityjwt.persistance.entities.util.Role;

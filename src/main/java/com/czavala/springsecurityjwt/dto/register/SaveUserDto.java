@@ -1,4 +1,4 @@
-package com.czavala.springsecurityjwt.dto;
+package com.czavala.springsecurityjwt.dto.register;
 
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
