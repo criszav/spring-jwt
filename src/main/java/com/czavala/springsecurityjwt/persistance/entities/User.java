@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
@@ -26,6 +27,7 @@ public class User implements UserDetails {
 
     private String name;
 
+    @Column(unique = true)
     private String username;
 
     private String password;
@@ -41,13 +43,16 @@ public class User implements UserDetails {
         // si los permisos del role son nulo, no hacemos nada
         if (role.getPermissions() == null) return null;
 
-        return role.getPermissions().stream()
+        List<SimpleGrantedAuthority> authorities = role.getPermissions().stream()
                 .map(permission -> {
                     String permissionName = permission.name();
                     // crea un authority (permiso) basado en los permisos que tenga el role del user
                     return new SimpleGrantedAuthority(permissionName);
                 })
                 .collect(Collectors.toList()); // retorna lista con los permisos (authorities)
+
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
+        return authorities;
     }
 
     @Override

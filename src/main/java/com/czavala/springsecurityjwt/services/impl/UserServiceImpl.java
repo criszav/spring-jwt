@@ -11,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -28,10 +30,10 @@ public class UserServiceImpl implements UserService {
         user.setName(newUser.getName());
         user.setUsername(newUser.getUsername());
         user.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        user.setRole(Role.ROLE_CUSTOMER);
+        user.setRole(Role.CUSTOMER);
 
-        userRepository.save(user);
-        return user;
+        // guarda el nuevo usuario (clase entity) en DB
+        return userRepository.save(user);
     }
 
     private void validatePassword(SaveUserDto newUser) {
@@ -45,5 +47,10 @@ public class UserServiceImpl implements UserService {
         if (!newUser.getPassword().equals(newUser.getRepeatedPassword())) {
             throw new InvalidPasswordException("Passwords do not match");
         }
+    }
+
+    @Override
+    public Optional<User> findOneByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }
