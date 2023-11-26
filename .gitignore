@@ -32,4 +32,5 @@ build/
 ### VS Code ###
 .vscode/
 
+src/main/resources/import.sql
 src/main/resources/application.properties
