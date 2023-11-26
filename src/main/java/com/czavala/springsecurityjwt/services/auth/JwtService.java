@@ -4,10 +4,13 @@ import com.czavala.springsecurityjwt.persistance.entities.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.security.Key;
 import java.util.Date;
@@ -28,7 +31,7 @@ public class JwtService {
     public String generateToken(UserDetails user, Map<String, Object> extraClaims) {
 
         Date issuedAt = new Date(System.currentTimeMillis()); // fecha actual del sistema
-        Date expirationDate = new Date((EXPIRATION_IN_MINUTES * 1000 * 60) + issuedAt.getTime());
+        Date expirationDate = new Date((EXPIRATION_IN_MINUTES * 60 * 1000) + issuedAt.getTime());
 
         String jwt = Jwts.builder()
                 // agrega claims adicionales que no son obligatorios
@@ -76,4 +79,24 @@ public class JwtService {
     }
 
 
+    public String extractJwtFromRequest(HttpServletRequest request) {
+
+        // 1. Obtener encabezado http "Authorization", que es quien contiene el token en el request
+        String authorizationHeader = request.getHeader("Authorization");
+
+        // 1.1 Validar que header contenga texto, es decir, que venga el token en el header
+        // tambien valida que el header comience con "Bearer ", posterior a ese viene el token
+        if (!StringUtils.hasText(authorizationHeader) || !authorizationHeader.startsWith("Bearer ")) {
+
+            // si header no tiene texto y no contiene el token, retornamos un null
+            return null;
+        }
+
+        // 2. Obtiene token desde el header authorization y lo retorna
+        return authorizationHeader.split(" ")[1];
+    }
+
+    public Date extractExpirationDate(String jwt) {
+        return extractAllClaims(jwt).getExpiration();
+    }
 }
