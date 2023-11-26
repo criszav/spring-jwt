@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,7 +44,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ProductDto> createOne(@RequestBody @Valid SaveProductDto saveProductDto) {
         ProductDto productDto = productService.createOne(saveProductDto);
-        return ResponseEntity.ok(productDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(productDto);
     }
 
     @PutMapping("/{id}")
